@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }} · News Application{% endblock %}
+
+{% block content %}
+<div style="display:flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+    <div style="flex:1;">
+        <h1>{{ article.title }}</h1>
+        <div class="article-meta" style="margin-bottom: 1rem;">
+            <span>By {{ article.author.username }}</span>
+            {% if article.publisher %}
+                <span>Publisher: {{ article.publisher.name }}</span>
+            {% endif %}
+            <span>{{ article.created_at|date:"j M Y, H:i" }}</span>
+            {% if article.is_approved %}
+                <span class="badge">Approved</span>
+            {% else %}
+                <span class="badge badge--muted">Pending approval</span>
+            {% endif %}
+        </div>
+
+        <p>{{ article.content|linebreaks }}</p>
+    </div>
+</div>
+
+<div class="btn-row">
+    <a href="{% url 'article_list' %}" class="btn-secondary">Back to list</a>
+
+    {% if article.author == user or perms.news_app.change_article %}
+        <a href="{% url 'article_update' article.pk %}" class="btn-ghost">Edit</a>
+    {% endif %}
+
+    {% if article.author == user or perms.news_app.delete_article %}
+        <a href="{% url 'article_delete' article.pk %}" class="btn-ghost">Delete</a>
+    {% endif %}
+
+    {% if perms.news_app.change_article and user.role == user.Roles.EDITOR and not article.is_approved %}
+        <a href="{% url 'approve_article' article.pk %}" class="btn">Approve &amp; publish</a>
+    {% endif %}
+</div>
+{% endblock %}

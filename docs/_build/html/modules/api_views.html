@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>API Views &#8212; News Capstone 1.0.0 documentation</title>
+<style>
+    body { font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; background:#edf0f2; color:#404040; margin:0; padding:0; }
+    .wy-nav-side { background:#343131; width:300px; position:fixed; top:0; bottom:0; overflow-y:auto; }
+    .wy-side-nav-search { background:#2980b9; padding:1em; }
+    .wy-side-nav-search a { color:#fff; font-size:1.2em; font-weight:700; text-decoration:none; }
+    .wy-menu-vertical { padding:0; }
+    .wy-menu-vertical a { display:block; padding:.6em 1.2em; color:#d9d9d9; text-decoration:none; font-size:.9em; }
+    .wy-menu-vertical li.current > a { background:#fcfcfc; color:#404040; font-weight:bold; }
+    .wy-menu-vertical a:hover { background:#4e4a4a; color:#fff; }
+    .wy-nav-content-wrap { margin-left:300px; background:#fcfcfc; }
+    .wy-nav-content { padding:1.618em 3.236em; max-width:1200px; }
+    h1 { border-bottom:1px solid #e1e4e5; font-size:175%; margin-bottom:.5em; }
+    h2 { font-size:130%; margin-top:1.8em; border-bottom:1px solid #e1e4e5; padding-bottom:.3em; color:#2980b9; }
+    h3 { font-size:110%; margin-top:1.2em; color:#404040; }
+    .breadcrumbs { font-size:.85em; color:#999; margin-bottom:1em; }
+    .breadcrumbs a { color:#999; text-decoration:none; }
+    dl.py { margin-bottom:2em; }
+    dt.sig { background:#e7f2fa; border-left:3px solid #2980b9; padding:.5em 1em; font-family:monospace; font-size:.92em; color:#2c3e50; margin-bottom:.3em; border-radius:0 4px 4px 0; }
+    dd { margin-left:1.5em; margin-top:.5em; }
+    dd p { margin:.3em 0; line-height:1.6; }
+    .field-list { margin:.5em 0 1em 0; }
+    .field-list th { font-weight:bold; min-width:80px; padding-right:.8em; vertical-align:top; color:#404040; }
+    .field-list td { padding:.2em 0; line-height:1.5; }
+    em.property { color:#905; font-style:normal; font-size:.9em; margin-right:.3em; }
+    code, .pre { background:#ecf0f1; padding:.1em .3em; border-radius:3px; font-size:.88em; font-family:monospace; }
+    .module-docstring { background:#f8f8f8; border:1px solid #e1e4e5; border-radius:4px; padding:1em 1.5em; margin-bottom:1.5em; }
+    hr { border:none; border-top:1px solid #e1e4e5; margin:2em 0; }
+    .source-link { float:right; font-size:.8em; color:#2980b9; }
+    @media(max-width:768px) { .wy-nav-side { display:none; } .wy-nav-content-wrap { margin-left:0; } }
+</style>
+</head><body>
+<div class="wy-nav-side">
+  <div class="wy-side-nav-search"><a href="../index.html">News Capstone</a></div>
+  <div class="wy-menu wy-menu-vertical"><ul><li><a href="../index.html">News Capstone – Documentation</a></li>
+<li><a href="models.html">Models</a></li>
+<li><a href="views.html">Views</a></li>
+<li><a href="forms.html">Forms</a></li>
+<li><a href="notifications.html">Notifications</a></li>
+<li><a href="serializers.html">Serializers</a></li>
+<li class="current"><a href="api_views.html">API Views</a></li>
+<li><a href="signals.html">Signals</a></li>
+<li><a href="admin.html">Admin</a></li>
+</ul></div>
+</div>
+<div class="wy-nav-content-wrap"><div class="wy-nav-content">
+<div class="breadcrumbs"><a href="../index.html">News Capstone</a> &#187; API Views</div>
+
+<h1>API Views <span style="font-size:.6em;color:#999;">news_app.api_views</span></h1>
+<div class="module-docstring">
+<p>REST API views exposing read-only endpoints for authenticated clients. All views require authentication via Django session or HTTP Basic Auth.</p>
+<table class="field-list"><tbody>
+<tr><th>Endpoint</th><td><code>GET /api/articles/</code> — Returns approved articles filtered to the requesting reader's subscriptions.</td></tr>
+</tbody></table>
+</div>
+
+<dl class="py class">
+<dt class="sig">class <strong>SubscribedArticlesAPIView</strong>(<em>generics.ListAPIView</em>)</dt>
+<dd>
+<p>Return approved articles relevant to the authenticated reader. Filters to include only articles where the <em>publisher</em> is in the reader's <code>subscribed_publishers</code> list, or the <em>author</em> is in the reader's <code>subscribed_journalists</code> list. Non-reader users (journalists, editors) receive an empty list.</p>
+<table class="field-list"><tbody>
+<tr><th>serializer_class</th><td>ArticleSerializer</td></tr>
+<tr><th>permission_classes</th><td>[IsAuthenticated]</td></tr>
+<tr><th>200 OK</th><td>List of serialised articles (may be empty).</td></tr>
+<tr><th>403 Forbidden</th><td>Unauthenticated request.</td></tr>
+</tbody></table>
+
+<h3>get_queryset()</h3>
+<dl class="py method"><dt class="sig">def <strong>get_queryset</strong>(self)</dt>
+<dd>
+<p>Build and return the subscription-filtered article queryset.</p>
+<table class="field-list"><tbody>
+<tr><th>Returns:</th><td>QuerySet[Article] — Approved articles matching the reader's subscriptions, ordered newest-first. Returns empty queryset for non-reader users.</td></tr>
+</tbody></table>
+</dd></dl>
+</dd></dl>
+
+<hr/><p style="font-size:.8em;color:#999;">Built with Sphinx 8.1.3 using the Read the Docs theme. News Capstone 1.0.0.</p>
+</div></div></body></html>

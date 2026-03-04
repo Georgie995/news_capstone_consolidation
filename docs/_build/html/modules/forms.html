@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Forms &#8212; News Capstone 1.0.0 documentation</title>
+<style>
+    body { font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; background:#edf0f2; color:#404040; margin:0; padding:0; }
+    .wy-nav-side { background:#343131; width:300px; position:fixed; top:0; bottom:0; overflow-y:auto; }
+    .wy-side-nav-search { background:#2980b9; padding:1em; }
+    .wy-side-nav-search a { color:#fff; font-size:1.2em; font-weight:700; text-decoration:none; }
+    .wy-menu-vertical { padding:0; }
+    .wy-menu-vertical a { display:block; padding:.6em 1.2em; color:#d9d9d9; text-decoration:none; font-size:.9em; }
+    .wy-menu-vertical li.current > a { background:#fcfcfc; color:#404040; font-weight:bold; }
+    .wy-menu-vertical a:hover { background:#4e4a4a; color:#fff; }
+    .wy-nav-content-wrap { margin-left:300px; background:#fcfcfc; }
+    .wy-nav-content { padding:1.618em 3.236em; max-width:1200px; }
+    h1 { border-bottom:1px solid #e1e4e5; font-size:175%; margin-bottom:.5em; }
+    h2 { font-size:130%; margin-top:1.8em; border-bottom:1px solid #e1e4e5; padding-bottom:.3em; color:#2980b9; }
+    h3 { font-size:110%; margin-top:1.2em; color:#404040; }
+    .breadcrumbs { font-size:.85em; color:#999; margin-bottom:1em; }
+    .breadcrumbs a { color:#999; text-decoration:none; }
+    dl.py { margin-bottom:2em; }
+    dt.sig { background:#e7f2fa; border-left:3px solid #2980b9; padding:.5em 1em; font-family:monospace; font-size:.92em; color:#2c3e50; margin-bottom:.3em; border-radius:0 4px 4px 0; }
+    dd { margin-left:1.5em; margin-top:.5em; }
+    dd p { margin:.3em 0; line-height:1.6; }
+    .field-list { margin:.5em 0 1em 0; }
+    .field-list th { font-weight:bold; min-width:80px; padding-right:.8em; vertical-align:top; color:#404040; }
+    .field-list td { padding:.2em 0; line-height:1.5; }
+    em.property { color:#905; font-style:normal; font-size:.9em; margin-right:.3em; }
+    code, .pre { background:#ecf0f1; padding:.1em .3em; border-radius:3px; font-size:.88em; font-family:monospace; }
+    .module-docstring { background:#f8f8f8; border:1px solid #e1e4e5; border-radius:4px; padding:1em 1.5em; margin-bottom:1.5em; }
+    hr { border:none; border-top:1px solid #e1e4e5; margin:2em 0; }
+    .source-link { float:right; font-size:.8em; color:#2980b9; }
+    @media(max-width:768px) { .wy-nav-side { display:none; } .wy-nav-content-wrap { margin-left:0; } }
+</style>
+</head><body>
+<div class="wy-nav-side">
+  <div class="wy-side-nav-search"><a href="../index.html">News Capstone</a></div>
+  <div class="wy-menu wy-menu-vertical"><ul><li><a href="../index.html">News Capstone – Documentation</a></li>
+<li><a href="models.html">Models</a></li>
+<li><a href="views.html">Views</a></li>
+<li class="current"><a href="forms.html">Forms</a></li>
+<li><a href="notifications.html">Notifications</a></li>
+<li><a href="serializers.html">Serializers</a></li>
+<li><a href="api_views.html">API Views</a></li>
+<li><a href="signals.html">Signals</a></li>
+<li><a href="admin.html">Admin</a></li>
+</ul></div>
+</div>
+<div class="wy-nav-content-wrap"><div class="wy-nav-content">
+<div class="breadcrumbs"><a href="../index.html">News Capstone</a> &#187; Forms</div>
+
+<h1>Forms <span style="font-size:.6em;color:#999;">news_app.forms</span></h1>
+<div class="module-docstring">
+<p>Django forms for the news_app application. Provides the user registration form bound to the custom user model.</p>
+</div>
+
+<dl class="py class">
+<dt class="sig">class <strong>CustomUserCreationForm</strong>(<em>UserCreationForm</em>)</dt>
+<dd>
+<p>User creation form bound to the <code>CustomUser</code> model with role selection. Ensures that registration creates instances of the custom user (with role and subscription fields) instead of the default <code>auth.User</code>. New users choose a role (Reader, Editor, or Journalist) during sign-up so they can immediately access role-appropriate features.</p>
+
+<h3>Fields</h3>
+<table class="field-list"><tbody>
+  <tr><th>role</th><td><em>ChoiceField</em> — Backed by <code>CustomUser.Roles.choices</code>. Stays in sync with any future changes to the Roles enum.</td></tr>
+  <tr><th>username</th><td>Inherited from <em>UserCreationForm</em>.</td></tr>
+  <tr><th>email</th><td>Inherited from <em>UserCreationForm</em>.</td></tr>
+  <tr><th>password1 / password2</th><td>Inherited from <em>UserCreationForm</em>.</td></tr>
+</tbody></table>
+
+<h3>save(commit=True)</h3>
+<dl class="py method"><dt class="sig">def <strong>save</strong>(self, commit: bool = True) → CustomUser</dt>
+<dd>
+<p>Create the user, set the role, and attach the correct permission group:</p>
+<ol>
+  <li>Save the base user instance (username, email, password).</li>
+  <li>Apply the selected role to the CustomUser instance.</li>
+  <li>Add the user to the corresponding Django auth Group (Reader / Editor / Journalist).</li>
+</ol>
+<p>Group membership grants the CRUD permissions on Article and Newsletter from the moment the account is created.</p>
+<table class="field-list"><tbody>
+<tr><th>Parameters:</th><td><strong>commit</strong> (bool) — Whether to save to the database immediately. Defaults to True.</td></tr>
+<tr><th>Returns:</th><td>CustomUser — The newly created user instance.</td></tr>
+</tbody></table>
+</dd></dl>
+
+<h3>_assign_group_for_role(user)</h3>
+<dl class="py method"><dt class="sig">def <strong>_assign_group_for_role</strong>(self, user: CustomUser) → None</dt>
+<dd><p>Internal helper to attach the user to the correct auth Group. Complements the <code>post_migrate</code> signal that creates the groups. Fails silently if the group does not exist (e.g. migrations not yet run).</p></dd></dl>
+</dd></dl>
+
+<hr/><p style="font-size:.8em;color:#999;">Built with Sphinx 8.1.3 using the Read the Docs theme. News Capstone 1.0.0.</p>
+</div></div></body></html>

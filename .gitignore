@@ -1,0 +1,45 @@
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# ── Virtual environments ─────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+
+# ── Django ───────────────────────────────────────────────────────────────────
+*.sqlite3
+media/
+staticfiles/
+static_collected/
+
+# ── Secrets — never commit these ─────────────────────────────────────────────
+.env
+secrets.txt
+*.env
+
+# ── IDE ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+
+# ── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Sphinx build output ──────────────────────────────────────────────────────
+# NOTE: We intentionally DO NOT ignore docs/_build here.
+# The task requires the generated HTML docs to be committed so reviewers
+# can read them directly in the repository.
+# docs/_build/
+
+# ── Docker ───────────────────────────────────────────────────────────────────
+# Do not ignore the Dockerfile itself — it must be committed.
+# Ignore any local override files that may contain secrets.
+docker-compose.override.yml

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Login · News Application{% endblock %}
+
+{% block content %}
+<h1>Sign in</h1>
+<p class="muted">Use your newsroom credentials to access the application.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="form-field">
+        <label for="id_username">Username</label>
+        <input type="text" name="username" id="id_username" required>
+    </div>
+    <div class="form-field">
+        <label for="id_password">Password</label>
+        <input type="password" name="password" id="id_password" required>
+    </div>
+    <div class="btn-row">
+        <button type="submit" class="btn">Login</button>
+        <a href="{% url 'register' %}" class="btn-ghost">Create a new account</a>
+    </div>
+</form>
+{% endblock %}

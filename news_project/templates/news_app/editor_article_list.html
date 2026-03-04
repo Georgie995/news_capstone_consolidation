@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Editor approval queue · News Application{% endblock %}
+
+{% block content %}
+<h1>Articles awaiting approval</h1>
+<p class="muted">
+    As an editor, you can review, approve, and publish submissions from journalists.
+</p>
+
+{% if articles %}
+    <div class="grid" style="margin-top: 1.5rem;">
+        {% for article in articles %}
+            <article class="article-card">
+                <h3>{{ article.title }}</h3>
+                <div class="article-meta">
+                    <span>By {{ article.author.username }}</span>
+                    {% if article.publisher %}
+                        <span>Publisher: {{ article.publisher.name }}</span>
+                    {% endif %}
+                    <span>Submitted {{ article.created_at|date:"j M Y, H:i" }}</span>
+                </div>
+                <p class="muted">
+                    {{ article.content|truncatewords:40 }}
+                </p>
+                <div class="article-actions">
+                    <a href="{% url 'article_detail' article.pk %}" class="btn-secondary">Open</a>
+                    <a href="{% url 'approve_article' article.pk %}" class="btn">Approve &amp; publish</a>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="muted" style="margin-top: 1.5rem;">There are no articles waiting for approval.</p>
+{% endif %}
+{% endblock %}

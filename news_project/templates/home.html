@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · News Application{% endblock %}
+
+{% block content %}
+<h1>Welcome back, {{ user.username }}.</h1>
+<p class="muted">
+    This dashboard gives you a quick way to jump into the parts of the newsroom that matter for your role.
+</p>
+
+<div class="btn-row">
+    <a href="{% url 'article_list' %}" class="btn">Browse articles</a>
+
+    {% if perms.news_app.add_article %}
+        <a href="{% url 'article_create' %}" class="btn-secondary">Write a new article</a>
+    {% endif %}
+
+    {% if perms.news_app.change_article and user.role == user.Roles.EDITOR %}
+        <a href="{% url 'editor_article_list' %}" class="btn-secondary">Editor approval queue</a>
+    {% endif %}
+</div>
+{% endblock %}

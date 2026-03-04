@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Serializers &#8212; News Capstone 1.0.0 documentation</title>
+<style>
+    body { font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; background:#edf0f2; color:#404040; margin:0; padding:0; }
+    .wy-nav-side { background:#343131; width:300px; position:fixed; top:0; bottom:0; overflow-y:auto; }
+    .wy-side-nav-search { background:#2980b9; padding:1em; }
+    .wy-side-nav-search a { color:#fff; font-size:1.2em; font-weight:700; text-decoration:none; }
+    .wy-menu-vertical { padding:0; }
+    .wy-menu-vertical a { display:block; padding:.6em 1.2em; color:#d9d9d9; text-decoration:none; font-size:.9em; }
+    .wy-menu-vertical li.current > a { background:#fcfcfc; color:#404040; font-weight:bold; }
+    .wy-menu-vertical a:hover { background:#4e4a4a; color:#fff; }
+    .wy-nav-content-wrap { margin-left:300px; background:#fcfcfc; }
+    .wy-nav-content { padding:1.618em 3.236em; max-width:1200px; }
+    h1 { border-bottom:1px solid #e1e4e5; font-size:175%; margin-bottom:.5em; }
+    h2 { font-size:130%; margin-top:1.8em; border-bottom:1px solid #e1e4e5; padding-bottom:.3em; color:#2980b9; }
+    h3 { font-size:110%; margin-top:1.2em; color:#404040; }
+    .breadcrumbs { font-size:.85em; color:#999; margin-bottom:1em; }
+    .breadcrumbs a { color:#999; text-decoration:none; }
+    dl.py { margin-bottom:2em; }
+    dt.sig { background:#e7f2fa; border-left:3px solid #2980b9; padding:.5em 1em; font-family:monospace; font-size:.92em; color:#2c3e50; margin-bottom:.3em; border-radius:0 4px 4px 0; }
+    dd { margin-left:1.5em; margin-top:.5em; }
+    dd p { margin:.3em 0; line-height:1.6; }
+    .field-list { margin:.5em 0 1em 0; }
+    .field-list th { font-weight:bold; min-width:80px; padding-right:.8em; vertical-align:top; color:#404040; }
+    .field-list td { padding:.2em 0; line-height:1.5; }
+    em.property { color:#905; font-style:normal; font-size:.9em; margin-right:.3em; }
+    code, .pre { background:#ecf0f1; padding:.1em .3em; border-radius:3px; font-size:.88em; font-family:monospace; }
+    .module-docstring { background:#f8f8f8; border:1px solid #e1e4e5; border-radius:4px; padding:1em 1.5em; margin-bottom:1.5em; }
+    hr { border:none; border-top:1px solid #e1e4e5; margin:2em 0; }
+    .source-link { float:right; font-size:.8em; color:#2980b9; }
+    @media(max-width:768px) { .wy-nav-side { display:none; } .wy-nav-content-wrap { margin-left:0; } }
+</style>
+</head><body>
+<div class="wy-nav-side">
+  <div class="wy-side-nav-search"><a href="../index.html">News Capstone</a></div>
+  <div class="wy-menu wy-menu-vertical"><ul><li><a href="../index.html">News Capstone – Documentation</a></li>
+<li><a href="models.html">Models</a></li>
+<li><a href="views.html">Views</a></li>
+<li><a href="forms.html">Forms</a></li>
+<li><a href="notifications.html">Notifications</a></li>
+<li class="current"><a href="serializers.html">Serializers</a></li>
+<li><a href="api_views.html">API Views</a></li>
+<li><a href="signals.html">Signals</a></li>
+<li><a href="admin.html">Admin</a></li>
+</ul></div>
+</div>
+<div class="wy-nav-content-wrap"><div class="wy-nav-content">
+<div class="breadcrumbs"><a href="../index.html">News Capstone</a> &#187; Serializers</div>
+
+<h1>Serializers <span style="font-size:.6em;color:#999;">news_app.serializers</span></h1>
+<div class="module-docstring">
+<p>DRF serializers convert model instances to JSON for the REST API. Three serializers are used by <code>news_app.api_views</code>.</p>
+</div>
+
+<dl class="py class">
+<dt class="sig">class <strong>PublisherSerializer</strong>(<em>ModelSerializer</em>)</dt>
+<dd><p>Read-only serializer for the Publisher model. Exposes <code>id</code> and <code>name</code> fields. Used as a nested serializer inside ArticleSerializer.</p>
+<p><strong>Example output:</strong> <code>{"id": 1, "name": "The Daily News"}</code></p>
+<table class="field-list"><tbody>
+<tr><th>model</th><td>Publisher</td></tr>
+<tr><th>fields</th><td>["id", "name"]</td></tr>
+</tbody></table></dd></dl>
+
+<dl class="py class">
+<dt class="sig">class <strong>JournalistSerializer</strong>(<em>ModelSerializer</em>)</dt>
+<dd><p>Read-only serializer for a journalist (CustomUser). Exposes only <code>id</code> and <code>username</code> — personal details such as email are intentionally excluded from the public API.</p>
+<p><strong>Example output:</strong> <code>{"id": 3, "username": "jane_writes"}</code></p></dd></dl>
+
+<dl class="py class">
+<dt class="sig">class <strong>ArticleSerializer</strong>(<em>ModelSerializer</em>)</dt>
+<dd><p>Full read-only serializer for the Article model. Embeds nested PublisherSerializer and JournalistSerializer so API consumers receive complete context without additional requests.</p>
+<table class="field-list"><tbody>
+<tr><th>fields</th><td>id, title, content, publisher (nested), author (nested), is_approved, created_at, approved_at</td></tr>
+</tbody></table></dd></dl>
+
+<hr/><p style="font-size:.8em;color:#999;">Built with Sphinx 8.1.3 using the Read the Docs theme. News Capstone 1.0.0.</p>
+</div></div></body></html>

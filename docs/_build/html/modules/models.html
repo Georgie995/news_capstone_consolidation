@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Models &#8212; News Capstone 1.0.0 documentation</title>
+<style>
+    body { font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; background:#edf0f2; color:#404040; margin:0; padding:0; }
+    .wy-nav-side { background:#343131; width:300px; position:fixed; top:0; bottom:0; overflow-y:auto; }
+    .wy-side-nav-search { background:#2980b9; padding:1em; }
+    .wy-side-nav-search a { color:#fff; font-size:1.2em; font-weight:700; text-decoration:none; }
+    .wy-menu-vertical { padding:0; }
+    .wy-menu-vertical a { display:block; padding:.6em 1.2em; color:#d9d9d9; text-decoration:none; font-size:.9em; }
+    .wy-menu-vertical li.current > a { background:#fcfcfc; color:#404040; font-weight:bold; }
+    .wy-menu-vertical a:hover { background:#4e4a4a; color:#fff; }
+    .wy-nav-content-wrap { margin-left:300px; background:#fcfcfc; }
+    .wy-nav-content { padding:1.618em 3.236em; max-width:1200px; }
+    h1 { border-bottom:1px solid #e1e4e5; font-size:175%; margin-bottom:.5em; }
+    h2 { font-size:130%; margin-top:1.8em; border-bottom:1px solid #e1e4e5; padding-bottom:.3em; color:#2980b9; }
+    h3 { font-size:110%; margin-top:1.2em; color:#404040; }
+    .breadcrumbs { font-size:.85em; color:#999; margin-bottom:1em; }
+    .breadcrumbs a { color:#999; text-decoration:none; }
+    dl.py { margin-bottom:2em; }
+    dt.sig { background:#e7f2fa; border-left:3px solid #2980b9; padding:.5em 1em; font-family:monospace; font-size:.92em; color:#2c3e50; margin-bottom:.3em; border-radius:0 4px 4px 0; }
+    dd { margin-left:1.5em; margin-top:.5em; }
+    dd p { margin:.3em 0; line-height:1.6; }
+    .field-list { margin:.5em 0 1em 0; }
+    .field-list th { font-weight:bold; min-width:80px; padding-right:.8em; vertical-align:top; color:#404040; }
+    .field-list td { padding:.2em 0; line-height:1.5; }
+    em.property { color:#905; font-style:normal; font-size:.9em; margin-right:.3em; }
+    code, .pre { background:#ecf0f1; padding:.1em .3em; border-radius:3px; font-size:.88em; font-family:monospace; }
+    .module-docstring { background:#f8f8f8; border:1px solid #e1e4e5; border-radius:4px; padding:1em 1.5em; margin-bottom:1.5em; }
+    hr { border:none; border-top:1px solid #e1e4e5; margin:2em 0; }
+    .source-link { float:right; font-size:.8em; color:#2980b9; }
+    @media(max-width:768px) { .wy-nav-side { display:none; } .wy-nav-content-wrap { margin-left:0; } }
+</style>
+</head><body>
+<div class="wy-nav-side">
+  <div class="wy-side-nav-search"><a href="../index.html">News Capstone</a></div>
+  <div class="wy-menu wy-menu-vertical"><ul><li><a href="../index.html">News Capstone – Documentation</a></li>
+<li class="current"><a href="models.html">Models</a></li>
+<li><a href="views.html">Views</a></li>
+<li><a href="forms.html">Forms</a></li>
+<li><a href="notifications.html">Notifications</a></li>
+<li><a href="serializers.html">Serializers</a></li>
+<li><a href="api_views.html">API Views</a></li>
+<li><a href="signals.html">Signals</a></li>
+<li><a href="admin.html">Admin</a></li>
+</ul></div>
+</div>
+<div class="wy-nav-content-wrap"><div class="wy-nav-content">
+<div class="breadcrumbs"><a href="../index.html">News Capstone</a> &#187; Models</div>
+
+<h1>Models <span style="font-size:.6em;color:#999;">news_app.models</span></h1>
+<div class="module-docstring">
+<p>Data models for the news_app application.</p>
+<p>This module defines the core database schema used by the news platform:</p>
+<ul>
+  <li><code>CustomUser</code> — extends Django's AbstractUser with a role field (Reader, Editor, Journalist) and subscription many-to-many relations.</li>
+  <li><code>Publisher</code> — an organisation that employs editors and journalists.</li>
+  <li><code>Article</code> — a piece of content authored by a journalist, subject to editorial approval before it becomes visible to readers.</li>
+  <li><code>Newsletter</code> — a broadcast message sent by a publisher or journalist.</li>
+</ul>
+</div>
+
+<h2>class news_app.models.CustomUser</h2>
+<dl class="py class">
+<dt class="sig">class <strong>CustomUser</strong>(<em>AbstractUser</em>)</dt>
+<dd>
+<p>Custom user model that extends Django's built-in user with roles.</p>
+<p>Three distinct roles control what each user can do:</p>
+<ul>
+  <li><strong>Reader</strong> — can view approved articles and newsletters, and subscribe to publishers and journalists.</li>
+  <li><strong>Editor</strong> — can view, update, and delete articles/newsletters, and approve articles written by journalists.</li>
+  <li><strong>Journalist</strong> — can create, view, update, and delete their own articles and newsletters.</li>
+</ul>
+<table class="field-list"><tbody>
+  <tr><th>role</th><td><em>CharField</em> — The user's functional role. One of <code>'reader'</code>, <code>'editor'</code>, or <code>'journalist'</code>.</td></tr>
+  <tr><th>subscribed_publishers</th><td><em>ManyToManyField</em> — Publishers the reader follows.</td></tr>
+  <tr><th>subscribed_journalists</th><td><em>ManyToManyField</em> — Journalist accounts the reader follows. Self-referential and asymmetric.</td></tr>
+</tbody></table>
+
+<h3>class Roles(TextChoices)</h3>
+<dl class="py class"><dt class="sig">class <strong>Roles</strong></dt>
+<dd><p>Enumeration of valid user roles: <code>READER = "reader"</code>, <code>EDITOR = "editor"</code>, <code>JOURNALIST = "journalist"</code>.</p></dd></dl>
+
+<h3>enforce_role_subscription_rules()</h3>
+<dl class="py method"><dt class="sig">def <strong>enforce_role_subscription_rules</strong>(self)</dt>
+<dd>
+<p>Clear subscriptions that are incompatible with the user's role. Journalists must not hold reader-style subscriptions. Must be called <em>after</em> the user has been saved (has a primary key) because many-to-many operations require a persisted instance.</p>
+<table class="field-list"><tbody>
+  <tr><th>Returns:</th><td>None</td></tr>
+</tbody></table>
+</dd></dl>
+
+<h3>__str__()</h3>
+<dl class="py method"><dt class="sig">def <strong>__str__</strong>(self)</dt>
+<dd><p>Return username and role as a human-readable string. E.g. <code>'alice (journalist)'</code>.</p>
+<table class="field-list"><tbody><tr><th>Returns:</th><td>str</td></tr></tbody></table>
+</dd></dl>
+</dd></dl>
+
+<h2>class news_app.models.Publisher</h2>
+<dl class="py class"><dt class="sig">class <strong>Publisher</strong>(<em>Model</em>)</dt>
+<dd>
+<p>An organisation that publishes articles and newsletters. Readers can subscribe to a publisher to receive all articles published under its banner via email notification.</p>
+<table class="field-list"><tbody>
+  <tr><th>name</th><td><em>CharField(max_length=255, unique=True)</em> — Unique display name of the publisher.</td></tr>
+  <tr><th>description</th><td><em>TextField(blank=True)</em> — Optional longer description.</td></tr>
+  <tr><th>editors</th><td><em>ManyToManyField</em> — Editor users assigned to this publisher.</td></tr>
+  <tr><th>journalists</th><td><em>ManyToManyField</em> — Journalist users who write for this publisher.</td></tr>
+</tbody></table>
+</dd></dl>
+
+<h2>class news_app.models.Article</h2>
+<dl class="py class"><dt class="sig">class <strong>Article</strong>(<em>Model</em>)</dt>
+<dd>
+<p>A news article authored by a journalist, subject to editorial approval. Articles must be approved (<code>is_approved=True</code>) before they become visible to readers. On approval, email notifications are sent to subscribed readers and a post is made to X (Twitter).</p>
+<table class="field-list"><tbody>
+  <tr><th>title</th><td><em>CharField(max_length=255)</em></td></tr>
+  <tr><th>content</th><td><em>TextField</em></td></tr>
+  <tr><th>publisher</th><td><em>ForeignKey(Publisher, null=True)</em> — May be None for independent journalists.</td></tr>
+  <tr><th>author</th><td><em>ForeignKey(CustomUser)</em> — The journalist who wrote the article.</td></tr>
+  <tr><th>is_approved</th><td><em>BooleanField(default=False)</em></td></tr>
+  <tr><th>created_at</th><td><em>DateTimeField(auto_now_add=True)</em></td></tr>
+  <tr><th>updated_at</th><td><em>DateTimeField(auto_now=True)</em></td></tr>
+  <tr><th>approved_by</th><td><em>ForeignKey(CustomUser, null=True)</em> — Editor who approved.</td></tr>
+  <tr><th>approved_at</th><td><em>DateTimeField(null=True)</em></td></tr>
+</tbody></table>
+</dd></dl>
+
+<h2>class news_app.models.Newsletter</h2>
+<dl class="py class"><dt class="sig">class <strong>Newsletter</strong>(<em>Model</em>)</dt>
+<dd>
+<p>A newsletter broadcast sent by a publisher or an individual journalist. Unlike articles, newsletters do not go through an editorial approval workflow.</p>
+<table class="field-list"><tbody>
+  <tr><th>title</th><td><em>CharField(max_length=255)</em></td></tr>
+  <tr><th>content</th><td><em>TextField</em></td></tr>
+  <tr><th>publisher</th><td><em>ForeignKey(Publisher, null=True)</em></td></tr>
+  <tr><th>journalist</th><td><em>ForeignKey(CustomUser, null=True)</em></td></tr>
+  <tr><th>created_at</th><td><em>DateTimeField(auto_now_add=True)</em></td></tr>
+</tbody></table>
+</dd></dl>
+
+<hr/><p style="font-size:.8em;color:#999;">Built with Sphinx 8.1.3 using the Read the Docs theme. News Capstone 1.0.0.</p>
+</div></div></body></html>

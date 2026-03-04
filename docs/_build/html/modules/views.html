@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Views &#8212; News Capstone 1.0.0 documentation</title>
+<style>
+    body { font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; background:#edf0f2; color:#404040; margin:0; padding:0; }
+    .wy-nav-side { background:#343131; width:300px; position:fixed; top:0; bottom:0; overflow-y:auto; }
+    .wy-side-nav-search { background:#2980b9; padding:1em; }
+    .wy-side-nav-search a { color:#fff; font-size:1.2em; font-weight:700; text-decoration:none; }
+    .wy-menu-vertical { padding:0; }
+    .wy-menu-vertical a { display:block; padding:.6em 1.2em; color:#d9d9d9; text-decoration:none; font-size:.9em; }
+    .wy-menu-vertical li.current > a { background:#fcfcfc; color:#404040; font-weight:bold; }
+    .wy-menu-vertical a:hover { background:#4e4a4a; color:#fff; }
+    .wy-nav-content-wrap { margin-left:300px; background:#fcfcfc; }
+    .wy-nav-content { padding:1.618em 3.236em; max-width:1200px; }
+    h1 { border-bottom:1px solid #e1e4e5; font-size:175%; margin-bottom:.5em; }
+    h2 { font-size:130%; margin-top:1.8em; border-bottom:1px solid #e1e4e5; padding-bottom:.3em; color:#2980b9; }
+    h3 { font-size:110%; margin-top:1.2em; color:#404040; }
+    .breadcrumbs { font-size:.85em; color:#999; margin-bottom:1em; }
+    .breadcrumbs a { color:#999; text-decoration:none; }
+    dl.py { margin-bottom:2em; }
+    dt.sig { background:#e7f2fa; border-left:3px solid #2980b9; padding:.5em 1em; font-family:monospace; font-size:.92em; color:#2c3e50; margin-bottom:.3em; border-radius:0 4px 4px 0; }
+    dd { margin-left:1.5em; margin-top:.5em; }
+    dd p { margin:.3em 0; line-height:1.6; }
+    .field-list { margin:.5em 0 1em 0; }
+    .field-list th { font-weight:bold; min-width:80px; padding-right:.8em; vertical-align:top; color:#404040; }
+    .field-list td { padding:.2em 0; line-height:1.5; }
+    em.property { color:#905; font-style:normal; font-size:.9em; margin-right:.3em; }
+    code, .pre { background:#ecf0f1; padding:.1em .3em; border-radius:3px; font-size:.88em; font-family:monospace; }
+    .module-docstring { background:#f8f8f8; border:1px solid #e1e4e5; border-radius:4px; padding:1em 1.5em; margin-bottom:1.5em; }
+    hr { border:none; border-top:1px solid #e1e4e5; margin:2em 0; }
+    .source-link { float:right; font-size:.8em; color:#2980b9; }
+    @media(max-width:768px) { .wy-nav-side { display:none; } .wy-nav-content-wrap { margin-left:0; } }
+</style>
+</head><body>
+<div class="wy-nav-side">
+  <div class="wy-side-nav-search"><a href="../index.html">News Capstone</a></div>
+  <div class="wy-menu wy-menu-vertical"><ul><li><a href="../index.html">News Capstone – Documentation</a></li>
+<li><a href="models.html">Models</a></li>
+<li class="current"><a href="views.html">Views</a></li>
+<li><a href="forms.html">Forms</a></li>
+<li><a href="notifications.html">Notifications</a></li>
+<li><a href="serializers.html">Serializers</a></li>
+<li><a href="api_views.html">API Views</a></li>
+<li><a href="signals.html">Signals</a></li>
+<li><a href="admin.html">Admin</a></li>
+</ul></div>
+</div>
+<div class="wy-nav-content-wrap"><div class="wy-nav-content">
+<div class="breadcrumbs"><a href="../index.html">News Capstone</a> &#187; Views</div>
+
+<h1>Views <span style="font-size:.6em;color:#999;">news_app.views</span></h1>
+<div class="module-docstring">
+<p>HTTP view functions for the news_app application. All views are protected with <code>@login_required</code> and where appropriate <code>@permission_required</code> to enforce role-based access control.</p>
+<table class="field-list"><tbody>
+  <tr><th>Reader</th><td>article_list, article_detail (approved only)</td></tr>
+  <tr><th>Journalist</th><td>article_create, article_update (own), article_delete (own)</td></tr>
+  <tr><th>Editor</th><td>editor_article_list, approve_article, article_update, article_delete</td></tr>
+</tbody></table>
+</div>
+
+<dl class="py function">
+<dt class="sig">def <strong>home</strong>(request)</dt>
+<dd><p>Render the authenticated home page.</p>
+<table class="field-list"><tbody>
+<tr><th>Parameters:</th><td><strong>request</strong> (HttpRequest) — The incoming HTTP request.</td></tr>
+<tr><th>Returns:</th><td>HttpResponse — Rendered <code>home.html</code> template.</td></tr>
+</tbody></table></dd></dl>
+
+<dl class="py function">
+<dt class="sig">def <strong>article_list</strong>(request)</dt>
+<dd><p>Display a list of articles appropriate to the requesting user's role. Readers and editors see all approved articles. Journalists also see their own unapproved articles so they can track submission status. Results are ordered newest-first.</p>
+<table class="field-list"><tbody>
+<tr><th>Parameters:</th><td><strong>request</strong> (HttpRequest)</td></tr>
+<tr><th>Returns:</th><td>HttpResponse — Rendered <code>news_app/article_list.html</code> with <code>articles</code> queryset in context.</td></tr>
+</tbody></table></dd></dl>
+
+<dl class="py function">
+<dt class="sig">def <strong>article_detail</strong>(request, pk)</dt>
+<dd><p>Display a single article with access control. Readers may only view approved articles; journalists and editors may view any article.</p>
+<table class="field-list"><tbody>
+<tr><th>Parameters:</th><td><strong>request</strong> (HttpRequest), <strong>pk</strong> (int) — Primary key of the Article.</td></tr>
+<tr><th>Returns:</th><td>HttpResponse — Rendered <code>news_app/article_detail.html</code> or redirect to <code>article_list</code>.</td></tr>
+</tbody></table></dd></dl>
+
+<dl class="py function">
+<dt class="sig">@login_required @permission_required("news_app.add_article") &nbsp; def <strong>article_create</strong>(request)</dt>
+<dd><p>Handle creation of a new article by a journalist. The new article is saved in an unapproved state pending editor review.</p>
+<table class="field-list"><tbody>
+<tr><th>Parameters:</th><td><strong>request</strong> (HttpRequest) — POST body must contain <code>title</code> and <code>content</code>.</td></tr>
+<tr><th>Returns:</th><td>HttpResponse — Renders <code>article_form.html</code> on GET; redirects to <code>article_list</code> on valid POST.</td></tr>
+</tbody></table></dd></dl>
+
+<dl class="py function">
+<dt class="sig">@login_required @permission_required("news_app.change_article") &nbsp; def <strong>article_update</strong>(request, pk)</dt>
+<dd><p>Allow permitted users to update an existing article. Journalists may only edit their own articles. Editing an approved article resets approval so it must be re-reviewed.</p></dd></dl>
+
+<dl class="py function">
+<dt class="sig">@login_required @permission_required("news_app.delete_article") &nbsp; def <strong>article_delete</strong>(request, pk)</dt>
+<dd><p>Allow permitted users to delete an article. Journalists may only delete their own articles. GET shows confirmation page; POST performs deletion.</p></dd></dl>
+
+<dl class="py function">
+<dt class="sig">@login_required @permission_required("news_app.change_article") &nbsp; def <strong>editor_article_list</strong>(request)</dt>
+<dd><p>Show all unapproved articles to editors for review. Non-editors are redirected to the home page.</p></dd></dl>
+
+<dl class="py function">
+<dt class="sig">@login_required @permission_required("news_app.change_article") &nbsp; def <strong>approve_article</strong>(request, pk)</dt>
+<dd><p>Allow an editor to approve a pending article. On approval: sets <code>is_approved=True</code>, records <code>approved_by</code> and <code>approved_at</code>, sends email notifications via <code>send_article_email_to_subscribers()</code>, and posts to X via <code>post_article_to_x()</code>.</p></dd></dl>
+
+<dl class="py function">
+<dt class="sig">def <strong>register_view</strong>(request)</dt>
+<dd><p>Handle new user registration. Not protected by <code>@login_required</code> so unauthenticated visitors can create an account. On successful registration the user is immediately logged in.</p></dd></dl>
+
+<hr/><p style="font-size:.8em;color:#999;">Built with Sphinx 8.1.3 using the Read the Docs theme. News Capstone 1.0.0.</p>
+</div></div></body></html>
