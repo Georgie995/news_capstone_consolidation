@@ -1,0 +1,10 @@
+__pycache__
+*.pyc
+*.pyo
+*.sqlite3
+.env
+.git
+.gitignore
+docs/_build
+*.md
+planning/

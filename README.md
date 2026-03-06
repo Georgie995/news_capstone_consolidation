@@ -8,8 +8,8 @@ A Django news platform where **Readers** subscribe to publishers and journalists
 
 1. [Features](#features)
 2. [Project Structure](#project-structure)
-3. [Running with a Virtual Environment (Local)](#running-with-a-virtual-environment-local)
-4. [Running with Docker](#running-with-docker)
+3. [Setup Option A – Virtual Environment (Local Development)](#setup-option-a--virtual-environment-local-development)
+4. [Setup Option B – Docker (Containerised)](#setup-option-b--docker-containerised)
 5. [Secrets & Credentials](#secrets--credentials)
 6. [Sphinx Documentation](#sphinx-documentation)
 7. [Running Tests](#running-tests)
@@ -33,7 +33,7 @@ A Django news platform where **Readers** subscribe to publishers and journalists
 ## Project Structure
 
 ```
-news_capstone_v9/
+news_capstone_consolidation/
 ├── Dockerfile
 ├── .dockerignore
 ├── .gitignore
@@ -70,7 +70,9 @@ news_capstone_v9/
 
 ---
 
-## Running with a Virtual Environment (Local)
+## Setup Option A – Virtual Environment (Local Development)
+
+Use this path if you want to run the project directly on your machine using Python and a local MySQL/MariaDB database.
 
 ### Prerequisites
 
@@ -153,13 +155,15 @@ Visit: http://127.0.0.1:8000/
 
 ---
 
-## Running with Docker
+## Setup Option B – Docker (Containerised)
+
+Use this path if you want to build and run the application inside a Docker container. This does **not** require Python, MySQL, or any other dependencies to be installed on your machine — only Docker.
 
 ### Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
 
-### Option A – SQLite (quickest, no MySQL required)
+### Using SQLite (quickest, no MySQL required)
 
 This is the easiest way to test the Docker image without needing an external database.
 
@@ -182,7 +186,7 @@ docker run -p 8000:8000 \
 
 http://localhost:8000/
 
-### Option B – MySQL (matches production setup)
+### Using MySQL (matches production setup)
 
 **Step 1 – Ensure a MySQL server is accessible from Docker.**
 
